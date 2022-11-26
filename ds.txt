@@ -1,0 +1,149 @@
+#include <stack>
+
+#include <iostream>
+
+#include "calc_useful.h"
+
+using namespace std;
+
+//function to clear the contents of stack
+
+void clear(stack <int> &);
+
+int main(){
+
+// declare your stack here
+
+stack<int> stk;
+
+int st = 0;
+
+//take a new variable choice to store if user deides to quit or not
+
+char c, choice='y';
+
+int onenum, twonum;
+
+do{
+
+stk.empty();
+
+//it is advisable to start with an empty stack
+
+//every time a new expression is entered
+
+//this function does that for us
+
+clear(stk);
+
+st=0;
+
+cout<<"\nPlease enter your expression:\n";
+
+c = cin.get();
+
+while(c != '\n'){
+
+if(isdigit(c)){
+
+cin.putback(c);
+
+cin >> onenum;
+
+stk.push(onenum);
+
+}else if(isop(c)){
+
+if(stk.empty()){
+
+cout<<"Wrong Expression!"<<endl;
+
+st = 1;
+
+continue;
+
+}
+
+twonum = stk.top();
+
+stk.pop();
+
+if(stk.empty()){
+
+cout<<"Wrong Expression!"<<endl;
+
+st = 1;
+
+continue;
+
+}
+
+onenum = stk.top();
+
+stk.pop();
+
+onenum = evaluate(onenum,twonum,c);
+
+stk.push(onenum);
+
+}
+
+c = cin.get();
+
+}
+
+if(stk.empty()){
+
+cout << "\nWrong Expression";
+
+st = 1;
+
+continue;
+
+}
+
+onenum = stk.top();
+
+stk.pop();
+
+if(!stk.empty()){
+
+cout << "Error. Insufficient operators for operands. \n";
+
+st = 1;
+
+continue;
+
+}
+
+if(st == 0)
+
+cout << "The answer is: " << onenum <<endl;
+
+cout << "\nDo you want to evaluate more expression ? (y/n) : ";
+
+//store the user's answer in choice variable
+
+cin >> choice;
+
+cin.ignore();
+
+
+}while(choice == 'y' || choice == 'Y');
+
+
+return 0;
+
+}
+
+//implementing the clear stack fucntion
+
+void clear(stack <int> &stk)
+
+{
+
+while(!stk.empty())
+
+stk.pop();
+
+}
